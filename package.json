@@ -1,13 +1,35 @@
 {
   "name": "respondent-matching",
   "version": "1.0.0",
-  "description": "Match a list of researchers with a candidate project",
-  "main": "index.js",
+  "description": "Match a list of reseachers with a candidate project",
+  "main": "src/index.js",
   "repository": "git@github.com:ajmath/respondent-matching.git",
   "author": "Andrew Matheny <andrew.j.matheny@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "format-all": "prettier --write **/*"
+  },
   "devDependencies": {
+    "husky": ">=1",
+    "lint-staged": ">=8",
+    "prettier": "1.18.2",
+    "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "csv-parse": "^4.4.7",
+    "tsyringe": "^3.4.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
