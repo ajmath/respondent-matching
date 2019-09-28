@@ -1,0 +1,13 @@
+{
+  "name": "respondent-matching",
+  "version": "1.0.0",
+  "description": "Match a list of researchers with a candidate project",
+  "main": "index.js",
+  "repository": "git@github.com:ajmath/respondent-matching.git",
+  "author": "Andrew Matheny <andrew.j.matheny@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^3.6.3"
+  }
+}
