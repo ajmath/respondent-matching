@@ -23,9 +23,14 @@ export function defaultReadStream() {
 
 @injectable()
 export class CsvRespondentLoader implements RespondentLoader {
+  private data?: Respondent[]; 
   constructor(private csvStream: Stream = defaultReadStream()) {}
 
-  public load(): Promise<Respondent[]> {
+  public async load(): Promise<Respondent[]> {
+    if (this.data) {
+      return this.data;
+    }
+
     const parser = parse({
       delimiter: ",",
       from_line: 2,
@@ -37,7 +42,7 @@ export class CsvRespondentLoader implements RespondentLoader {
       stream.on("data", d => {
         respondents.push(this.parseRespondantRow(d));
       });
-      stream.on("end", () => resolve(respondents));
+      stream.on("end", () => resolve(this.data = respondents));
       stream.on("error", reject);
     });
   }
@@ -47,7 +52,7 @@ export class CsvRespondentLoader implements RespondentLoader {
       firstName: row[0],
       gender: parseGender(row[1]),
       jobTitle: row[2],
-      industry: row[3],
+      industries: row[3].split(","),
       city: row[4],
       latitude: parseFloat(row[5]),
       longitude: parseFloat(row[6]),
