@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "csv-parse": "^4.4.7",
+    "geolib": "^3.0.4",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^3.4.0"
   },
