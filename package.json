@@ -8,17 +8,22 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "format-all": "prettier --write **/*"
+    "format-all": "prettier --write **/*",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.18",
     "husky": ">=1",
+    "jest": "^24.9.0",
     "lint-staged": ">=8",
     "prettier": "1.18.2",
+    "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
   },
   "dependencies": {
     "csv-parse": "^4.4.7",
+    "reflect-metadata": "^0.1.13",
     "tsyringe": "^3.4.0"
   },
   "husky": {
