@@ -13,7 +13,7 @@ export function parseGender(val: string): Genders {
   return Genders.other;
 }
 
-interface RespondentLoader {
+export interface RespondentLoader {
   load(): Promise<Respondent[]>;
 }
 

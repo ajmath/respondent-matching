@@ -13,8 +13,9 @@ async function main() {
   const matches = matcher.findCandidates(project, 100000);
 
   console.log(`results for project: ${project.name}`);
+  console.log(`name,distance,city,score`);
   for (const match of matches) {
-    console.log(match);
+    console.log(`${match.respondent.firstName},${match.distance.value},${match.distance.closestCity.location.formattedAddress},${match.score}`);
   }
 }
 

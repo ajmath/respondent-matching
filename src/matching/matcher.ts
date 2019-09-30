@@ -1,14 +1,14 @@
-import { injectable } from "tsyringe";
-import { CsvRespondentLoader } from "../respondents/loader";
+import { injectable, inject } from "tsyringe";
+import { CsvRespondentLoader, RespondentLoader } from "../respondents/loader";
 import { CityInfo, Project, Respondent } from "../types";
 import { getDistance } from "geolib";
 
-interface DistanceInfo {
+export interface DistanceInfo {
   closestCity: CityInfo;
   value: number;
 }
 
-interface MatchResult {
+export interface MatchResult {
   score: number;
   distance: DistanceInfo;
   respondent: Respondent;
@@ -18,7 +18,7 @@ interface MatchResult {
 export class Matcher {
   private allRespondents: Respondent[] = [];
 
-  constructor(private respondentLoader: CsvRespondentLoader) {}
+  constructor(@inject(CsvRespondentLoader) private respondentLoader: RespondentLoader) {}
 
   public async initialize(): Promise<void> {
     this.allRespondents = await this.respondentLoader.load();
@@ -53,15 +53,19 @@ export function calculateDistance(
   };
 }
 
-export function calculateMatchResult(
+/**
+ * Calculates score of 0-3 based distance, matching title, and percentage of the 
+ * project industries that align with the respondent
+ */
+function calculateScore(
   project: Project,
   respondent: Respondent,
   distance: DistanceInfo,
   maxDistance: number
-): MatchResult {
+): number {
   let score = 0;
   if (project.professionalJobTitles.includes(respondent.jobTitle)) {
-    // Consider expanding this to include partial matches
+    // Consider expanding this to include partial matches?
     score += 1;
   }
 
@@ -70,10 +74,19 @@ export function calculateMatchResult(
   );
   score += matchingIndustries.length / project.professionalIndustry.length;
 
-  score += (maxDistance - distance.value) / maxDistance;
+  score += (maxDistance - Math.min(distance.value, maxDistance)) / maxDistance;
 
+  return score;
+}
+
+export function calculateMatchResult(
+  project: Project,
+  respondent: Respondent,
+  distance: DistanceInfo,
+  maxDistance: number
+): MatchResult {
   return {
-    score,
+    score: calculateScore(project, respondent, distance, maxDistance),
     distance,
     respondent,
   };

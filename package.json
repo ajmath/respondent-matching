@@ -9,7 +9,8 @@
   "private": false,
   "scripts": {
     "format-all": "prettier --write **/*",
-    "test": "jest"
+    "test": "jest",
+    "run-sample": "ts-node src/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
